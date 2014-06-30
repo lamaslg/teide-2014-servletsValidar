@@ -21,27 +21,21 @@ import com.luis.modelo.Usuario;
 public class VerDatos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
-	private ArrayList<Producto> productos;
+	
 	
 	@Override
 	public void init() throws ServletException {
 		// TODO Auto-generated method stub
 		super.init();
 	
-	productos=new ArrayList<>();
 	
-	productos.add(new Producto("Telefono",200));
-	productos.add(new Producto("Reloj",100));
-	productos.add(new Producto("Tablet",150));
-	productos.add(new Producto("Aire acondicionado",300));
-	productos.add(new Producto("Portatil",1200));
-	productos.add(new Producto("Monitor",50));
 	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession sesion=request.getSession();
 		Usuario us=(Usuario)sesion.getAttribute("miUsuario");
-		
+		ArrayList<Producto> productos=
+				(ArrayList<Producto>) getServletContext().getAttribute("productos");
 		
 		PrintWriter salida=response.getWriter();
 		

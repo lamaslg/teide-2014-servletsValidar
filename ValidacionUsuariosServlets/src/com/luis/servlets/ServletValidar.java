@@ -19,12 +19,13 @@ import com.luis.modelo.Usuario;
  * Servlet implementation class ServletValidar
  */
 @WebServlet("/validarUsuario")
+@SuppressWarnings("unchecked")
 public class ServletValidar extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
 	
 	//Definimos un mapa con los usuarios de la aplicacion
-	private HashMap<String, Usuario> usuarios;
+	
 	
 	//Definimos el init para inicializar la lista de usuarios
 	@Override
@@ -32,13 +33,7 @@ public class ServletValidar extends HttpServlet {
 		// TODO Auto-generated method stub
 		super.init();
 		
-		usuarios=new HashMap<>();
 		
-		Usuario u1=new Usuario("luis","1234",true);
-		usuarios.put("luis", u1);
-		usuarios.put("pedro", new Usuario("pedro", "1234", false));
-		usuarios.put("maria", new Usuario("maria", "1234", true));
-		usuarios.put("eva", new Usuario("eva", "1234", false));
 		
 	
 	}
@@ -48,6 +43,9 @@ public class ServletValidar extends HttpServlet {
    		String pwd=request.getParameter("txtPassword");
    		HttpSession sesion=request.getSession();
    		
+		
+		HashMap<String, Usuario> usuarios=
+   				(HashMap<String, Usuario>) getServletContext().getAttribute("usuarios");
    		//Contains key indica si tenemos la clave en el mapa
    		if(usuarios.containsKey(request.getParameter("txtLogin"))){
    			//Para obtener uso get
