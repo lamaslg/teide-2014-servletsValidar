@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.luis.modelo.Producto;
 import com.luis.modelo.Usuario;
@@ -16,7 +17,7 @@ import com.luis.modelo.Usuario;
 /**
  * Servlet implementation class VerDatos
  */
-@WebServlet("/verDatos")
+@WebServlet("/privado/verDatos")
 public class VerDatos extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
@@ -38,7 +39,8 @@ public class VerDatos extends HttpServlet {
 	}
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Usuario us=(Usuario)request.getAttribute("miUsuario");
+		HttpSession sesion=request.getSession();
+		Usuario us=(Usuario)sesion.getAttribute("miUsuario");
 		
 		
 		PrintWriter salida=response.getWriter();

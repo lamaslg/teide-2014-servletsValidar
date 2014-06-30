@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
@@ -45,16 +46,16 @@ public class ServletValidar extends HttpServlet {
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		String login=request.getParameter("txtLogin");
    		String pwd=request.getParameter("txtPassword");
-   		
+   		HttpSession sesion=request.getSession();
    		
    		//Contains key indica si tenemos la clave en el mapa
    		if(usuarios.containsKey(request.getParameter("txtLogin"))){
    			//Para obtener uso get
    			Usuario us=usuarios.get(login);
    			if(us.getPassword().equals(pwd) && us.isAutorizado()){
-   				request.setAttribute("miUsuario", us);
+   				sesion.setAttribute("miUsuario", us);
    				
-   				RequestDispatcher dsp=request.getRequestDispatcher("/verDatos");
+   				RequestDispatcher dsp=request.getRequestDispatcher("/privado/verDatos");
    				dsp.forward(request, response);
    				
    				return;
