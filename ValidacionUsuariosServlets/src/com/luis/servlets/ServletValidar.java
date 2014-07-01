@@ -6,6 +6,7 @@ import java.util.HashMap;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,6 +42,7 @@ public class ServletValidar extends HttpServlet {
    	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
    		String login=request.getParameter("txtLogin");
    		String pwd=request.getParameter("txtPassword");
+   		String rec=request.getParameter("chRecordar");
    		HttpSession sesion=request.getSession();
    		
 		
@@ -52,6 +54,13 @@ public class ServletValidar extends HttpServlet {
    			Usuario us=usuarios.get(login);
    			if(us.getPassword().equals(pwd) && us.isAutorizado()){
    				sesion.setAttribute("miUsuario", us);
+   				if(rec!=null){
+   					Cookie coc=new Cookie("usuario", us.getLogin());
+   					coc.setMaxAge(30*24*3600);
+   					response.addCookie(coc);
+   					
+   				}
+   				
    				
    				RequestDispatcher dsp=request.getRequestDispatcher("/privado/verDatos");
    				dsp.forward(request, response);

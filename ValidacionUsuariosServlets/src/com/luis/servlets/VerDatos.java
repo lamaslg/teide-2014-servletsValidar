@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,11 +37,24 @@ public class VerDatos extends HttpServlet {
 		Usuario us=(Usuario)sesion.getAttribute("miUsuario");
 		ArrayList<Producto> productos=
 				(ArrayList<Producto>) getServletContext().getAttribute("productos");
+		int veces=1;
+		Cookie[] cookies=request.getCookies();
+		for (Cookie cookie : cookies) {
+			if(cookie.getName().equals("veces")){
+				veces=Integer.parseInt(cookie.getValue());
+			}
+			
+			
+		}
+		Cookie coo=new Cookie("veces", (veces+1)+"");
+		coo.setMaxAge(30*24*3600);
+		response.addCookie(coo);
+		
 		
 		PrintWriter salida=response.getWriter();
 		
 		salida.print("<html><head></head><body>");
-		salida.print("Bienvenido "+us.getLogin()+"<br>");
+		salida.print("Bienvenido "+us.getLogin()+" has accedido "+veces+"<br>");
 		salida.print("Estos son nuestros productos:");
 		salida.print("<table><tr><th>Producto</th><th>Precio</th></tr>");
 		for (Producto pro : productos) {
